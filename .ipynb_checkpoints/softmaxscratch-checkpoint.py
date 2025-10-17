@@ -1,6 +1,7 @@
 import torch
 import torchvision
 import os
+import d2l
 from torch.utils import data
 from torchvision import transforms
 
@@ -29,11 +30,11 @@ def load_data_fashin_mnist(batch_size, resize=None, num_threads=0):
 
 def softmax(X):
     X_exp = torch.exp(X)
-    partition = X_exp.sum(dim=1, keepdim=True)
+    partition = X_exp.sum(dim=-1, keepdim=True)
     return X_exp / partition
 
 
-def cross_entropy(y,y_hat,batch_size):
-    return -torch.log(y_hat[range(len(y_hat)),y])
+def cross_entropy(y, y_hat, batch_size):
+    return -torch.log(y_hat[range(len(y_hat)), y])
 
 
