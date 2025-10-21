@@ -21,7 +21,7 @@ def sample_selector(batch_size, features, labels):
     random.shuffle(indices)
     for i in range(0, num_examples, batch_size):
         batch_indices = torch.tensor(indices[i : min(i + batch_size, num_examples)])
-        num_sample = min(batch_size,num_examples-i)
+        num_sample = min(batch_size, num_examples - i)
         yield features[batch_indices], labels[batch_indices], num_sample
 
 
@@ -29,8 +29,8 @@ def linreg(X, w, b):
     return torch.matmul(X, w) + b
 
 
-def squared_loss(y_hat, y,batch_size):
-    return ((y_hat - y.reshape(y_hat.shape)) ** 2).sum()/2/batch_size
+def squared_loss(y_hat, y, batch_size):
+    return ((y_hat - y.reshape(y_hat.shape)) ** 2).sum() / 2 / batch_size
 
 
 def sgd(params, lr):
@@ -52,10 +52,9 @@ b = torch.normal(0, 0.01, [1], requires_grad=True)
 
 for epoch in range(num_epochs):
     for X, y, num_samples in sample_selector(batch_size, features, labels):
-        loss = squared_loss(linreg(X, w, b),y,num_samples)
+        loss = squared_loss(linreg(X, w, b), y, num_samples)
         loss.backward()
-        sgd([w,b],lr)
+        sgd([w, b], lr)
     with torch.no_grad():
-        loss_after_train = squared_loss(linreg(features,w,b),labels,num_examples)
-        print(f'epoch {epoch + 1}, loss {float(loss_after_train):f}')
-        
+        loss_after_train = squared_loss(linreg(features, w, b), labels, num_examples)
+        print(f"epoch {epoch + 1}, loss {float(loss_after_train):f}")
